@@ -1,5 +1,5 @@
 import { isArray } from 'class-validator';
-import { DEFAULT_STATIC_IMAGES, STATIC_RESOURCE_FIELDS, STATIC_ROUTE, UPLOAD_ROUTE } from '../const.js';
+import { DEFAULT_STATIC_IMAGES, STATIC_RESOURCE_FIELDS, STATIC_ROUTE, UPLOAD_ROUTE } from '../constants/index.js';
 
 
 function isObject(value: unknown): value is Record<string, object> {

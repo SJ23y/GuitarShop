@@ -157,10 +157,10 @@ paths:
             $ref: '#/components/schemas/count'
           required: false
         - in: query
-          name: 'sortOrder'
+          name: 'sortDirection'
           description: Направление сортировки, по убыванию или по возрастанию
           schema:
-            $ref: '#/components/schemas/sortOrder'
+            $ref: '#/components/schemas/sortDirection'
           required: false
         - in: query
           name: 'sortBy'
@@ -444,7 +444,7 @@ components:
       type: string
       example: guitar
 
-    sortOrder:
+    sortDirection:
       type: string
       example: asc
 

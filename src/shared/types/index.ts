@@ -1,5 +1,5 @@
-export { User } from './user.type';
-export { Guitar } from './guitar.type';
-export { GuitarModel } from './guitarModel.enum';
-export { Component } from './component.enum';
-export { DocumentExists } from './document-exists.interface';
+export { User } from './user.type.js';
+export { Guitar } from './guitar.type.js';
+export { GuitarModel } from './guitarModel.enum.js';
+export { Component } from './component.enum.js';
+export { DocumentExists } from './document-exists.interface.js';

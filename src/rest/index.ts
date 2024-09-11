@@ -19,4 +19,3 @@ export { ValidationError } from './errors/validation-error.js';
 export { ApplicationError } from './types/application-error.enum.js';
 export { HttpExceptionFilter } from './exception-filter/http-exception-filter.js';
 export { ValidationExceptionFilter } from './exception-filter/validation-exception-filter.js';
-export { ValidateAuthorMiddleware } from './middleware/validate-author.middleware.js';

@@ -1,5 +1,5 @@
 export enum GuitarModel {
-  'ELECTRIC '= 'el-guitar',
-  'ACUSTIC' = 'guitar',
-  'UKULELE' = 'ukulele'
+  'ELECTRIC '= 'ELECTRIC',
+  'ACUSTIC' = 'ACUSTIC',
+  'UKULELE' = 'UKULELE'
 }

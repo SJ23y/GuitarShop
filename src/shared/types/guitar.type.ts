@@ -1,12 +1,12 @@
-import { GuitarModel } from "./guitarModel.enum";
-
+import { TypeOfGuitar } from "@prisma/client";
 export type Guitar = {
+  id?: string
   date: Date;
   title: string;
   price: number;
   articul: string;
   description: string;
   picture: string;
-  type: GuitarModel;
+  type: TypeOfGuitar;
   stringsNumber: number;
 }

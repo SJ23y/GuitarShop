@@ -1,0 +1,77 @@
+# Create new user
+POST http://localhost:5000/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": "@example.com",
+  "password": "qw"
+}
+###
+
+# Login
+POST http://localhost:5000/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "pest@example.com",
+  "password": "qwerty"
+}
+###
+
+# Check Auth
+GET http://localhost:5000/login HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiVGVzdFVzZXIiLCJzdWIiOiI2NmUxZmM3YzQyODhiZGJkM2JiNThmNDkiLCJpYXQiOjE3MjYwODY2MjIsImV4cCI6MTcyNjI1OTQyMn0.7v7d0iZI9UaR7u2NyXj54DDi2wFpsEA9b4rFPhUY7Wk
+
+###
+
+#Get Guitars
+get http://localhost:5000/guitars HTTP/1.1
+Content-Type: application/json
+
+###
+
+#Add new guitar
+POST  http://localhost:5000/guitars HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiVGVzdFVzZXIiLCJzdWIiOiI2NmUxZmM3YzQyODhiZGJkM2JiNThmNDkiLCJpYXQiOjE3MjYwODY2MjIsImV4cCI6MTcyNjI1OTQyMn0.7v7d0iZI9UaR7u2NyXj54DDi2wFpsEA9b4rFPhUY7Wk
+
+{
+  "title": "Pender P60",
+  "description": "Гитара как гитара. Гитара как гитара. Гитара как гитара. Гитара как гитара",
+  "articul": "SO754564",
+  "date": "2024-06-04T01:29:12.729Z",
+  "stringsNumber": 6,
+  "type": "ELECTRIC",
+  "price": 6500,
+  "picture": "example.jpg"
+}
+###
+
+#Get guitar
+get http://localhost:5000/guitars/2d36a23a-4bbf-472c-9da4-9f80a21042df HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiVGVzdFVzZXIiLCJzdWIiOiI2NmUxZmM3YzQyODhiZGJkM2JiNThmNDkiLCJpYXQiOjE3MjYwODY2MjIsImV4cCI6MTcyNjI1OTQyMn0.7v7d0iZI9UaR7u2NyXj54DDi2wFpsEA9b4rFPhUY7Wk
+
+###
+
+#Update guitar
+PATCH http://localhost:5000/guitars/2d36a23a-4bbf-472c-9da4-9f80a21042df HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiVGVzdFVzZXIiLCJzdWIiOiI2NmUxZmM3YzQyODhiZGJkM2JiNThmNDkiLCJpYXQiOjE3MjYwODY2MjIsImV4cCI6MTcyNjI1OTQyMn0.7v7d0iZI9UaR7u2NyXj54DDi2wFpsEA9b4rFPhUY7Wk
+
+{
+  "price": 500
+}
+
+###
+
+#Delete Guitar
+DELETE http://localhost:5000/guitars/2d36a23a-4bbf-472c-9da4-9f80a21042df HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiVGVzdFVzZXIiLCJzdWIiOiI2NmUxZmM3YzQyODhiZGJkM2JiNThmNDkiLCJpYXQiOjE3MjYwODY2MjIsImV4cCI6MTcyNjI1OTQyMn0.7v7d0iZI9UaR7u2NyXj54DDi2wFpsEA9b4rFPhUY7Wk
+
+###
+
+

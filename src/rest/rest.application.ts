@@ -7,8 +7,7 @@ import cors from 'cors';
 import { Controller, ExceptionFilter } from './index.js';
 import { ParseTokenMiddleware } from './middleware/parse-token.middleware.js';
 import { getFullServerPath } from '../shared/helpers/common.js';
-import { STATIC_ROUTE, UPLOAD_ROUTE } from '../shared/const.js';
-import { CityController } from '../shared/modules/city/city.controller.js';
+import { STATIC_ROUTE, UPLOAD_ROUTE } from '../shared/constants/const.js';
 
 
 @injectable()
@@ -18,29 +17,30 @@ export class RestApplication {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.Config) private readonly config: Config<RestSchema>,
-    @inject(Component.DatabaseClient) private readonly databaseClient: DatabaseClient,
+    @inject(Component.MongoDatabaseClient) private readonly mongoDatabaseClient: DatabaseClient,
+    @inject(Component.PrismaDatabaseClient) private readonly prismaDatabaseClient: DatabaseClient,
     @inject(Component.ExceptionFilter) private readonly exceptionFilter: ExceptionFilter,
     @inject(Component.UserController) private readonly userController: Controller,
-    @inject(Component.OfferController) private readonly offerController: Controller,
-    @inject(Component.CommentController) private readonly commentController: Controller,
+    @inject(Component.GuitarController) private readonly guitarController: Controller,
     @inject(Component.AuthExceptionFilter) private readonly authExceptionFilter: ExceptionFilter,
     @inject(Component.HttpExceptionFilter) private readonly httpExceptionFilter: ExceptionFilter,
     @inject(Component.ValidationExceptionFilter) private readonly validationExceptionFilter: ExceptionFilter,
-    @inject(Component.CityController) private readonly cityController: CityController
+
   ) {
     this.server = express();
   }
 
   private async initDB() {
     const mongoURI = getMongoURI(
-      this.config.get('DB_USER'),
-      this.config.get('DB_PASSWORD'),
-      this.config.get('DB_HOST'),
-      this.config.get('DB_PORT'),
-      this.config.get('DB_NAME')
+      this.config.get('MONGO_DB_USER'),
+      this.config.get('MONGO_DB_PASSWORD'),
+      this.config.get('MONGO_DB_HOST'),
+      this.config.get('MONGO_DB_PORT'),
+      this.config.get('MONGO_DB_NAME')
     );
 
-    await this.databaseClient.connect(mongoURI);
+    await this.mongoDatabaseClient.connect(mongoURI);
+    await this.prismaDatabaseClient.connect();
   }
 
   private async initServer() {
@@ -67,17 +67,16 @@ export class RestApplication {
 
   private async initControllers() {
     this.server.use('/', this.userController.router);
-    this.server.use('/', this.offerController.router);
-    this.server.use('/', this.commentController.router);
+    this.server.use('/', this.guitarController.router);
   }
 
   public async init() {
     this.logger.info('Application initialization');
     this.logger.info(`PORT: ${this.config.get('PORT')}`);
 
-    this.logger.info('Init database ...');
+    this.logger.info('Init databases ...');
     await this.initDB();
-    this.logger.info('Init database completed');
+    this.logger.info('Init databases completed');
 
     this.logger.info('Init app-level middlewares ...');
     await this.initMiddleware();
@@ -94,7 +93,5 @@ export class RestApplication {
     this.logger.info('Try to init server ...');
     await this.initServer();
     this.logger.info(`Server started on ${getFullServerPath(this.config.get('HOST'), this.config.get('PORT'))}`);
-
-    this.cityController.create();
   }
 }

@@ -9,10 +9,8 @@ import { TokenPayload } from '../../shared/modules/auth/index.js';
 function isTokenPayload(payload: unknown): payload is TokenPayload {
   return (
     (typeof payload === 'object' && payload !== null) &&
-    ('email' in payload && typeof payload.email === 'string') &&
     ('name' in payload && typeof payload.name === 'string') &&
-    ('id' in payload && typeof payload.id === 'string') &&
-    ('isPro' in payload && typeof payload.isPro === 'boolean')
+    ('sub' in payload && typeof payload.sub === 'string')
   );
 }
 

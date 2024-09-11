@@ -1,15 +1,15 @@
-import { ClassConstructor, plainToInstance } from 'class-transformer';
+import { ClassTransformOptions, plainToInstance } from 'class-transformer';
 import { ValidationError } from 'class-validator';
 import { ApplicationError, ValidationErrorField } from '../../rest/index.js';
 
-const getRandomInteger = (a: number, b: number) => {
+export const getRandomInteger = (a: number, b: number) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 };
 
-const generateRandomIndex = (a: number, b: number) => {
+export const generateRandomIndex = (a: number, b: number) => {
   const indexNumbers: number[] = [];
   return () => {
     let currentIndex = getRandomInteger(a, b);
@@ -24,9 +24,9 @@ const generateRandomIndex = (a: number, b: number) => {
   };
 };
 
-const getRanndomElement = <T>(arr: T[]) => arr[getRandomInteger(0, arr.length - 1)];
+export const getRanndomElement = <T>(arr: T[]) => arr[getRandomInteger(0, arr.length - 1)];
 
-const getRandomSubArray = <T>(arr: T[], count?: number) => {
+export const getRandomSubArray = <T>(arr: T[], count?: number) => {
   count = count || getRandomInteger(1, arr.length - 1);
   const newArray: T[] = [];
   const indexGenerator = generateRandomIndex(0, arr.length - 1);
@@ -39,27 +39,34 @@ const getRandomSubArray = <T>(arr: T[], count?: number) => {
   return newArray;
 };
 
-const getErrorMessage = (error: unknown) => (error instanceof Error) ? error.message : '';
+export const getErrorMessage = (error: unknown) => (error instanceof Error) ? error.message : '';
 
-const createErrorObject = (errorType: ApplicationError, error: string, details?: ValidationErrorField[]) => ({errorType, error, details});
+export const createErrorObject = (errorType: ApplicationError, error: string, details?: ValidationErrorField[]) => ({errorType, error, details});
 
-const fillRdo = <T, V>(someDto: ClassConstructor<T>, plainObject: V) => plainToInstance(someDto, plainObject, {excludeExtraneousValues: true});
+export function fillRdo<T, V>(
+  DtoClass: new () => T,
+  plainObject: V,
+  options?: ClassTransformOptions
+): T;
 
-const reduceValidationErrors = (errors: ValidationError[]) => errors.map(({property, value, constraints}) => ({
+export function fillRdo<T, V extends []>(
+  DtoClass: new () => T,
+  plainObject: V,
+  options?: ClassTransformOptions
+): T[];
+
+export function fillRdo<T, V>(
+  DtoClass: new () => T,
+  plainObject: V,
+  options?: ClassTransformOptions
+): T | T[] {
+  return plainToInstance(DtoClass, plainObject, { excludeExtraneousValues: true, ...options, })
+}
+
+export const reduceValidationErrors = (errors: ValidationError[]) => errors.map(({property, value, constraints}) => ({
   property,
   value,
   messages: constraints ? Object.values(constraints) : []
 }));
 
-const getFullServerPath = (host: string, port: number) => `http://${host}:${port}`;
-
-export {
-  getRandomInteger,
-  getRandomSubArray,
-  getRanndomElement,
-  getErrorMessage,
-  createErrorObject,
-  fillRdo,
-  reduceValidationErrors,
-  getFullServerPath
-};
+export const getFullServerPath = (host: string, port: number) => `http://${host}:${port}`;

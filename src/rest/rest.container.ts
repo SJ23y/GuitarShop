@@ -11,6 +11,7 @@ import {
   RestSchema
 } from '../shared/libs/index.js';
 import { HttpExceptionFilter, ValidationExceptionFilter } from './index.js';
+import { PrismaDatabaseClient } from '../shared/libs/database-client/prisma.database-client.js';
 
 export function createRestApplicationContainer() {
   const restApplicationContainer = new Container();
@@ -18,7 +19,8 @@ export function createRestApplicationContainer() {
   restApplicationContainer.bind<RestApplication>(Component.RestApplication).to(RestApplication).inSingletonScope();
   restApplicationContainer.bind<Logger>(Component.Logger).to(PinoLogger).inSingletonScope();
   restApplicationContainer.bind<Config<RestSchema>>(Component.Config).to(RestConfig).inSingletonScope();
-  restApplicationContainer.bind<DatabaseClient>(Component.DatabaseClient).to(MongoDatabaseClient).inSingletonScope();
+  restApplicationContainer.bind<DatabaseClient>(Component.MongoDatabaseClient).to(MongoDatabaseClient).inSingletonScope();
+  restApplicationContainer.bind<DatabaseClient>(Component.PrismaDatabaseClient).to(PrismaDatabaseClient).inSingletonScope();
   restApplicationContainer.bind<ExceptionFilter>(Component.ExceptionFilter).to(AppExceptionFilter).inSingletonScope();
   restApplicationContainer.bind<ExceptionFilter>(Component.HttpExceptionFilter).to(HttpExceptionFilter).inSingletonScope();
   restApplicationContainer.bind<ExceptionFilter>(Component.ValidationExceptionFilter).to(ValidationExceptionFilter).inSingletonScope();

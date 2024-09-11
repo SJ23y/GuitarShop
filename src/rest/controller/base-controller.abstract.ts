@@ -38,7 +38,6 @@ export abstract class BaseController implements Controller {
       .type(this.DEFAULT_CONTENT_TYPE)
       .status(statusCode)
       .json(modifiedData);
-
   }
 
   public created<T>(res: Response, data: T): void {

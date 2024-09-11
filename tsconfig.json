@@ -35,7 +35,6 @@
     "node_modules",
     "**/*.test.ts"
   ],
-
   "ts-node": {
     "esm": true
   },

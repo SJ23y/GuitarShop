@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
+  "type": "module",
+  "engines": {
+    "node": "^20.0.0",
+    "npm": ">=10"
+  },
   "scripts": {
     "start": "npm run build && node ./dist/main.rest.js",
     "start:dev": "nodemon",
@@ -10,7 +15,11 @@
     "lint": "eslint src/ --ext .ts",
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
-    "ts": "tsc --noEmit && node --no-warnings=--no-warnings=ExperimentalWarning --loader ts-node/esm"
+    "ts": "tsc --noEmit && node --no-warnings=--no-warnings=ExperimentalWarning --loader ts-node/esm",
+    "db:validate": "prisma validate --schema ./src/shared/libs/database-client/prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema ./src/shared/libs/database-client/prisma/schema.prisma --skip-generate --skip-seed",
+    "db:reset": "prisma migrate reset --schema ./src/shared/libs/database-client/prisma/schema.prisma --force --skip-generate --skip-seed",
+    "db:generate": "prisma generate --schema ./src/shared/libs/database-client/prisma/schema.prisma"
   },
   "keywords": [
     "rest",
@@ -24,12 +33,16 @@
     "class-validator": "0.14.1",
     "convict": "6.2.4",
     "convict-format-with-validator": "6.2.0",
+    "cors": "2.8.5",
     "dotenv": "16.4.5",
     "express": "4.20.0",
+    "express-async-handler": "1.2.0",
     "http-status-codes": "2.3.0",
     "inversify": "6.0.2",
     "jose": "5.8.0",
+    "mime-types": "2.1.35",
     "mongoose": "8.6.1",
+    "multer": "1.4.5-lts.1",
     "nodemon": "3.1.4",
     "pino": "9.4.0",
     "reflect-metadata": "0.2.2"
@@ -37,7 +50,10 @@
   "devDependencies": {
     "@types/convict": "6.1.6",
     "@types/convict-format-with-validator": "6.0.5",
+    "@types/cors": "2.8.17",
     "@types/express": "4.17.21",
+    "@types/mime-types": "2.1.4",
+    "@types/multer": "1.4.12",
     "@types/node": "22.5.4",
     "@typescript-eslint/eslint-plugin": "8.4.0",
     "@typescript-eslint/parser": "8.4.0",
@@ -45,6 +61,7 @@
     "eslint-config-htmlacademy": "10.0.1",
     "json-server": "0.17.3",
     "pino-pretty": "11.2.2",
+    "prisma": "5.19.1",
     "rimraf": "6.0.1",
     "ts-node": "10.9.2",
     "tslib": "2.7.0",

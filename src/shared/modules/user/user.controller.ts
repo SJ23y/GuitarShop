@@ -1,5 +1,5 @@
 import { injectable, inject } from 'inversify';
-import { BaseController,HttpError, HttpMethod } from '../../../rest/index.js';
+import { BaseController,HttpError, HttpMethod, ValidateDtoMiddleware } from '../../../rest/index.js';
 import { Config, Logger, RestSchema } from '../../libs/index.js';
 import { Response, Request } from 'express';
 import {
@@ -7,7 +7,9 @@ import {
   UserService,
   UserRdo,
   LoggedUserRdo,
-  LoginUserRequest } from './index.js';
+  LoginUserRequest,
+  CreateUserDto,
+  LoginUserDto} from './index.js';
 import { StatusCodes } from 'http-status-codes';
 import { fillRdo } from '../../helpers/common.js';
 import { AuthService } from '../auth/auth-service.interface.js';
@@ -26,9 +28,11 @@ export class UserController extends BaseController {
     super(logger, config);
     this.logger.info('Register routes for user controller ...');
 
-    this.addRoute({path: '/register', method: HttpMethod.POST, handler: this.create});
+    this.addRoute({path: '/register', method: HttpMethod.POST, handler: this.create, middlewares: [
+      new ValidateDtoMiddleware(CreateUserDto)]});
     this.addRoute({path: '/login', method: HttpMethod.GET, handler: this.auth});
-    this.addRoute({path: '/login', method: HttpMethod.POST, handler: this.login});
+    this.addRoute({path: '/login', method: HttpMethod.POST, handler: this.login, middlewares: [
+      new ValidateDtoMiddleware(LoginUserDto)]});
 
     this.addRoute({
       path: '/logout',
@@ -65,7 +69,7 @@ export class UserController extends BaseController {
     res: Response
   ): Promise<void> {
 
-    const user = await this.userService.findByEmail(req.tokenPayload.email);
+    const user = await this.userService.findById(req.tokenPayload.sub);
 
     if (!user) {
       throw new HttpError(
