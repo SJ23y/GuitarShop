@@ -3,8 +3,6 @@ import { Response, Router } from 'express';
 import { Config, Logger, RestSchema } from '../../shared/libs/index.js';
 import { StatusCodes } from 'http-status-codes';
 import asyncHandler from 'express-async-handler';
-import { getFullServerPath } from '../../shared/helpers/common.js';
-import { transformPath } from '../../shared/helpers/path-transformer.js';
 import { injectable } from 'inversify';
 
 @injectable()
@@ -32,12 +30,10 @@ export abstract class BaseController implements Controller {
   }
 
   public send<T>(res: Response, statusCode: number, data: T): void {
-    const serverPath = getFullServerPath(this.config.get('HOST'), this.config.get('PORT'));
-    const modifiedData = transformPath(data as Record<string, unknown>, serverPath);
     res
       .type(this.DEFAULT_CONTENT_TYPE)
       .status(statusCode)
-      .json(modifiedData);
+      .json(data);
   }
 
   public created<T>(res: Response, data: T): void {

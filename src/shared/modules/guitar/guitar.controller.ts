@@ -5,7 +5,8 @@ import {
   RequestBody,
   RequestParams,
   ValidateDtoMiddleware,
-  DocumentExistsMiddleware
+  DocumentExistsMiddleware,
+  UploadFileMiddleware
   } from '../../../rest/index.js';
 import { Component } from '../../types/component.enum.js';
 import { Config, Logger, RestSchema } from '../../libs/index.js';
@@ -43,7 +44,9 @@ export class GuitarController extends BaseController {
       middlewares: [
         new PrivateRouteMiddleware(),
         new PrivateRouteMiddleware(),
-        new ValidateDtoMiddleware(AddGuitarDto)]
+        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'),'image'),
+        new ValidateDtoMiddleware(AddGuitarDto)
+      ],
     });
 
     this.addRoute({
@@ -63,8 +66,9 @@ export class GuitarController extends BaseController {
       middlewares: [
         new PrivateRouteMiddleware(),
         new ValidateUUIDMiddleware('guitarId'),
-        new ValidateDtoMiddleware(UpdateGuitarDto),
-        new DocumentExistsMiddleware(this.guitarService, 'guitarId', 'Guitar')
+        new DocumentExistsMiddleware(this.guitarService, 'guitarId', 'Guitar'),
+        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'),'image'),
+        new ValidateDtoMiddleware(UpdateGuitarDto)
       ]
     });
 
@@ -78,20 +82,6 @@ export class GuitarController extends BaseController {
         new DocumentExistsMiddleware(this.guitarService, 'guitarId', 'Guitar')
       ]
     });
-
-    /*this.addRoute({
-      path: '/offers/:offerId/preview',
-      method: HttpMethod.POST,
-      handler: this.uploadPreview,
-      middlewares: [
-        new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.guitarService, 'offerId', 'Offer'),
-        new ValidateAuthorMiddleware(this.guitarService),
-        new ValidateDtoMiddleware(UpdateOfferDto),
-        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), [{name: 'preview', maxCount: 1}])
-      ]
-    });*/
   }
 
   private async index(
@@ -109,13 +99,10 @@ export class GuitarController extends BaseController {
     res: Response
   ): Promise<void> {
 
-    /*if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      images = files.image && files.image.map((image) => image.filename);
-      previewImage = files.preview[0] && files.preview[0].filename;
-    }*/
+    console.log('date: ', new Date(req.body.date));
+    const picture = req.file?.filename ?? '';
 
-    const newGuitar = await this.guitarService.create(req.body);
+    const newGuitar = await this.guitarService.create({...req.body, picture});
 
     this.created(res, fillRdo(GuitarRdo, newGuitar));
   }
@@ -133,6 +120,10 @@ export class GuitarController extends BaseController {
     req: Request<Record<string, string>, RequestBody, UpdateGuitarDto>,
     res: Response
   ): Promise<void> {
+
+    if (req.file?.filename) {
+      req.body.picture = req.file?.filename;
+    }
 
     const updatedGuitar = await this.guitarService.updateById(req.params.guitarId, { ...req.body});
 

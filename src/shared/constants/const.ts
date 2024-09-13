@@ -1,4 +1,4 @@
-const UPLOAD_ROUTE = '/upload';
+const UPLOAD_ROUTE = '/uploads';
 const STATIC_ROUTE = '/static';
 const GUITAR_STRINGS_NUMBERS = [4, 6, 7, 12]
 
@@ -13,35 +13,26 @@ enum DatabaseSetting {
   DEFAULT_MONGO_DB_PORT = '27017'
 }
 
-const DEFAULT_STATIC_IMAGES = [
-  'default-image-01.jpg',
-  'default-image-02.jpg',
-  'default-image-03.jpg',
-  'default-image-04.jpg',
-  'default-image-05.jpg',
-  'default-image-06.jpg',
-  'default-preview.jpg'
-];
-
-const STATIC_RESOURCE_FIELDS = [
-  'avatar',
-  'images',
-  'previewImage'
-];
-
-
 enum JWTtSetting {
   ALGORYTHM = 'HS256',
   EXPIRATION_TIME = '2d'
 }
+
+const defaultImages = [
+  'catalog-product-1.png',
+  'catalog-product-2.png',
+  'catalog-product-3.jpg',
+  'catalog-product-4.jpg',
+  'catalog-product-5.jpg',
+  'catalog-product-6png',
+]
 
 export {
   Setting,
   JWTtSetting,
   STATIC_ROUTE,
   UPLOAD_ROUTE,
-  DEFAULT_STATIC_IMAGES,
-  STATIC_RESOURCE_FIELDS,
   DatabaseSetting,
-  GUITAR_STRINGS_NUMBERS
+  GUITAR_STRINGS_NUMBERS,
+  defaultImages
 };

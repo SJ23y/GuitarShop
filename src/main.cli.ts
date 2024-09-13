@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-/*
+
 import 'reflect-metadata';
-import { CliApplication, HelpCommand, ImportCommand, VersionCommand, GenerateCommand } from './cli/index.js';
+import { CliApplication, HelpCommand, VersionCommand, GenerateCommand } from './cli/index.js';
 
 function bootstrap() {
+  console.log('in main bootstrap')
   const cliAppliaction = new CliApplication();
   cliAppliaction.registerCommands([
     new VersionCommand(),
     new HelpCommand(),
-    new ImportCommand(),
     new GenerateCommand()
   ]);
 
@@ -16,4 +16,5 @@ function bootstrap() {
 
 }
 
-bootstrap();*/
+console.log('in main bootstrap')
+bootstrap();

@@ -11,6 +11,7 @@ import {
 import { GuitarValidationMessage } from './create-offer.messages.js';
 import { GuitarModel } from '../../../types/guitarModel.enum.js';
 import { GUITAR_STRINGS_NUMBERS } from '../../../constants/const.js';
+import { Transform } from 'class-transformer';
 
 export class AddGuitarDto {
   @IsString()
@@ -33,6 +34,7 @@ export class AddGuitarDto {
 
   @IsInt({message: GuitarValidationMessage.intType.type})
   @IsIn(GUITAR_STRINGS_NUMBERS, {message: GuitarValidationMessage.stringsNumber.wrongValue})
+  @Transform(({ value }) => parseInt(value, 10), { toClassOnly: true })
   public stringsNumber: number;
 
   @IsIn(Object.values(GuitarModel), {message: GuitarValidationMessage.type.wrongValue})
@@ -41,8 +43,8 @@ export class AddGuitarDto {
   @IsInt({message: GuitarValidationMessage.intType.type})
   @Min(100, {message: GuitarValidationMessage.price.value})
   @Max(1000000, {message: GuitarValidationMessage.price.value})
+  @Transform(({ value }) => parseInt(value, 10), { toClassOnly: true })
   public price: number;
 
-  @IsString({message: GuitarValidationMessage.stringType.type})
   public picture: string;
 }

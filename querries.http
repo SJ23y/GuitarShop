@@ -38,15 +38,15 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiVGVzdFVzZXIiLCJzdWIiOiI2NmUxZmM3YzQyODhiZGJkM2JiNThmNDkiLCJpYXQiOjE3MjYwODY2MjIsImV4cCI6MTcyNjI1OTQyMn0.7v7d0iZI9UaR7u2NyXj54DDi2wFpsEA9b4rFPhUY7Wk
 
 {
-  "title": "Pender P60",
-  "description": "Гитара как гитара. Гитара как гитара. Гитара как гитара. Гитара как гитара",
-  "articul": "SO754564",
+  "title": "Bibson B800",
+  "description": "Bibson B800 is hdkjhfkdfhsjkjsdfsdfffffffffffffffffffffffffffffffffffff",
+  "articul": "SO754560",
   "date": "2024-06-04T01:29:12.729Z",
   "stringsNumber": 6,
   "type": "ELECTRIC",
-  "price": 6500,
-  "picture": "example.jpg"
+  "price": 656500
 }
+
 ###
 
 #Get guitar
@@ -73,5 +73,3 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiVGVzdFVzZXIiLCJzdWIiOiI2NmUxZmM3YzQyODhiZGJkM2JiNThmNDkiLCJpYXQiOjE3MjYwODY2MjIsImV4cCI6MTcyNjI1OTQyMn0.7v7d0iZI9UaR7u2NyXj54DDi2wFpsEA9b4rFPhUY7Wk
 
 ###
-
-

@@ -19,7 +19,8 @@
     "db:validate": "prisma validate --schema ./src/shared/libs/database-client/prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --schema ./src/shared/libs/database-client/prisma/schema.prisma --skip-generate --skip-seed",
     "db:reset": "prisma migrate reset --schema ./src/shared/libs/database-client/prisma/schema.prisma --force --skip-generate --skip-seed",
-    "db:generate": "prisma generate --schema ./src/shared/libs/database-client/prisma/schema.prisma"
+    "db:generate": "prisma generate --schema ./src/shared/libs/database-client/prisma/schema.prisma",
+    "db:fill": "npx ts-node ./src/shared/libs/database-client/prisma/seed.ts"
   },
   "keywords": [
     "rest",
@@ -34,6 +35,7 @@
     "convict": "6.2.4",
     "convict-format-with-validator": "6.2.0",
     "cors": "2.8.5",
+    "dayjs": "1.11.13",
     "dotenv": "16.4.5",
     "express": "4.20.0",
     "express-async-handler": "1.2.0",
@@ -48,6 +50,7 @@
     "reflect-metadata": "0.2.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "9.0.0",
     "@types/convict": "6.1.6",
     "@types/convict-format-with-validator": "6.0.5",
     "@types/cors": "2.8.17",
@@ -64,11 +67,10 @@
     "prisma": "5.19.1",
     "rimraf": "6.0.1",
     "ts-node": "10.9.2",
-    "tslib": "2.7.0",
-    "typescript": "5.6.2"
+    "tslib": "2.6.2",
+    "typescript": "5.4.5"
   },
   "volta": {
-    "node": "20.17.0",
-    "npm": "10.5.0"
+    "node": "20.17.0"
   }
 }

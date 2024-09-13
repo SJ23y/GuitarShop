@@ -24,7 +24,7 @@ export const generateRandomIndex = (a: number, b: number) => {
   };
 };
 
-export const getRanndomElement = <T>(arr: T[]) => arr[getRandomInteger(0, arr.length - 1)];
+export const getRandomElement = <T>(arr: T[]) => arr[getRandomInteger(0, arr.length - 1)];
 
 export const getRandomSubArray = <T>(arr: T[], count?: number) => {
   count = count || getRandomInteger(1, arr.length - 1);

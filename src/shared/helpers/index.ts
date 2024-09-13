@@ -1,7 +1,7 @@
 export {
   getRandomInteger,
   getRandomSubArray,
-  getRanndomElement,
+  getRandomElement,
   getErrorMessage,
   createErrorObject,
   fillRdo,
@@ -9,7 +9,5 @@ export {
   getFullServerPath
 } from './common.js';
 
-export { getCurrentModeuleDicrectoryPath } from './file-system.js';
 export { getMongoURI } from './database.js';
 export { createSHA256 } from './hash.js';
-export { transformPath } from './path-transformer.js';
