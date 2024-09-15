@@ -26,7 +26,6 @@ function PaginationBox({ totalPages }: PaginationBoxProps): JSX.Element {
   }, [query])
 
   useEffect(() => {
-    console.log(totalPages);
     setPages(generatePaginationPages(currentPage, totalPages, []));
   }, [totalPages])
 
@@ -48,6 +47,7 @@ function PaginationBox({ totalPages }: PaginationBoxProps): JSX.Element {
                   "pagination__page--active": currentPage === page
                 })
               }
+              key={`page-${page}`}
             >
               <a
                 className="link pagination__page-link"

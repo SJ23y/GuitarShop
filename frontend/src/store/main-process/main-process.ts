@@ -42,7 +42,6 @@ const mainProcess = createSlice({
         state.errorStatus = false;
       })
       .addCase(uploadGuitars.fulfilled, (state, action) => {
-        console.log('Action.payload: ', action.payload);
         state.initialGuitars = action.payload;
       })
       .addCase(uploadGuitars.rejected, (state) => {

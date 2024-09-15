@@ -9,7 +9,6 @@ import { GuitarQuery } from '../types/query';
 import { createQueryString } from '../utils';
 
 const uploadGuitars = createAsyncThunk<Guitars, GuitarQuery, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('uploadGuitars', async (query, {extra: api}) => {
-  console.log('url with query', `${ApiRoute.Guitars}?${createQueryString(query)}`)
   const { data } = await api.get<Guitars>(`${ApiRoute.Guitars}?${createQueryString(query)}`);
   return data;
 });
