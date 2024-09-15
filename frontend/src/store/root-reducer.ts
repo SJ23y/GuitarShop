@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { NameSpace } from '../consts';
 import { mainProcess } from './main-process/main-process';
-import { offerProcess } from './offer-process/offer-process';
+import { guitarProcess } from './guitar-process/guitar-process';
 import { userProcess } from './user-process/user-process';
 
 const rootReducer = combineReducers({

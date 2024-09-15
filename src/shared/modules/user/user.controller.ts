@@ -30,7 +30,9 @@ export class UserController extends BaseController {
 
     this.addRoute({path: '/register', method: HttpMethod.POST, handler: this.create, middlewares: [
       new ValidateDtoMiddleware(CreateUserDto)]});
-    this.addRoute({path: '/login', method: HttpMethod.GET, handler: this.auth});
+    this.addRoute({path: '/login', method: HttpMethod.GET, handler: this.auth,
+      middlewares: [new PrivateRouteMiddleware()]
+    });
     this.addRoute({path: '/login', method: HttpMethod.POST, handler: this.login, middlewares: [
       new ValidateDtoMiddleware(LoginUserDto)]});
 
@@ -68,6 +70,7 @@ export class UserController extends BaseController {
     req: CreateUserRequest,
     res: Response
   ): Promise<void> {
+
 
     const user = await this.userService.findById(req.tokenPayload.sub);
 

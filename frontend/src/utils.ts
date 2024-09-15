@@ -1,49 +1,8 @@
-import { Setting, SortBy } from './consts';
-import dayjs from 'dayjs';
-import { Offers } from './types/offers';
-import { Reviews } from './types/reviews';
 import { Action } from 'redux';
-
-const calculateRatingWidth = (rating: number): string =>
-  `${(Math.round(rating) * 100) / Setting.MaxRating}%`;
-
-const capitalizeWord = (word: string): string => {
-  const firstLetter = word.substring(0, 1);
-  const remainingWord = word.substring(1);
-  return `${firstLetter.toUpperCase()}${remainingWord}`;
-};
-
-const parseDate = (date: string, dateFormat: string): string =>
-  dayjs(date).format(dateFormat);
-
-const sortAndFilterOffers = (
-  city: string,
-  sortType: SortBy,
-  initialOffers: Offers,
-) => {
-  const offers = [...initialOffers].filter((offer) => offer.city.name === city);
-  switch (sortType) {
-    case SortBy.Popular:
-      break;
-    case SortBy.PriceDown:
-      offers.sort(
-        (firstOffer, secondOffer) => secondOffer.price - firstOffer.price,
-      );
-      break;
-    case SortBy.PriceUp:
-      offers.sort(
-        (firstOffer, secondOffer) => firstOffer.price - secondOffer.price,
-      );
-      break;
-    case SortBy.Rating:
-      offers.sort(
-        (firstOffer, secondOffer) => secondOffer.rating - firstOffer.rating,
-      );
-      break;
-  }
-
-  return offers;
-};
+import { GuitarQuery } from './types/query';
+import { Setting, SortBy, SortDirection } from './consts';
+import { Guitar } from './types/guitars';
+import dayjs from 'dayjs';
 
 const getRandomInteger = (a: number, b: number) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -82,31 +41,58 @@ const getRandomSubArray = <T>(arr: T[], count: number) => {
   return newArray;
 };
 
-const sortReviewsByDate = (reviews: Reviews) => {
-  if (reviews !== null && reviews.length > 1) {
-    const newReviews = [...reviews];
-    newReviews.sort(
-      (firstReview, secondReview) =>
-        dayjs(secondReview.date).valueOf() - dayjs(firstReview.date).valueOf(),
-    );
-    if (newReviews.length > Setting.ReviewsShownCount) {
-      return newReviews.slice(0, Setting.ReviewsShownCount);
-    }
-    return newReviews;
-  }
-  return reviews;
-};
-
 const extactActionsType = (actions: Action<string>[]) =>
   actions.map(({ type }) => type);
 
+
+const createQueryString = ({count, sortBy, sortDirection, page, types, strings}: GuitarQuery) => {
+  let queryString = `count=${count}&sortBy=${sortBy}&sortDirection=${sortDirection}&page=${page}`
+  if (types && types.length > 0) {
+    queryString += types.reduce((result, item): string => {
+      return result + `&type[]=${item}`;
+    }, '')
+  }
+
+  if (strings && strings.length > 0) {
+    queryString += strings.reduce((result, item): string => {
+      return result +`&strings[]=${item}`;
+    }, '')
+  }
+  return queryString;
+}
+
+const sortGuitars = (sortBy: SortBy, sortDirection: SortDirection, guitars: Guitar[]) => {
+  const sortedGuitars = [...guitars];
+  switch (sortBy) {
+    case SortBy.DATE:
+      sortedGuitars.sort((firstGuitar, secondGuitar) => dayjs(secondGuitar.date).valueOf() - dayjs(firstGuitar.date).valueOf());
+      break;
+    case SortBy.PRICE:
+      sortedGuitars.sort((firstGuitar, secondGuitar) => secondGuitar.price - firstGuitar.price);
+  }
+
+  return (sortDirection === SortDirection.DOWN) ? sortedGuitars : sortedGuitars.reverse();
+}
+
+const generatePaginationPages = (currentPage: number, totalPages: number, pages: number[]) => {
+  let newPages = [...pages]
+  for(let i=currentPage; i < (currentPage + Setting.PaginationPagesCount); i++ ) {
+    if (i <= totalPages && !newPages.includes(i)) {
+      newPages.push(i);
+      if (newPages.length > Setting.PaginationPagesCount) {
+        newPages = newPages.slice(1)
+      }
+    }
+  }
+
+  return newPages;
+}
+
 export {
-  calculateRatingWidth,
-  capitalizeWord,
-  parseDate,
-  sortAndFilterOffers,
   getRandomSubArray,
-  sortReviewsByDate,
   extactActionsType,
   getRandomInteger,
+  createQueryString,
+  sortGuitars,
+  generatePaginationPages
 };

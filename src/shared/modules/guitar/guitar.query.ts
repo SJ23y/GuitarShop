@@ -7,6 +7,7 @@ export class GuitarQuery {
   @Transform(({ value }) => parseInt(value, 10) || Setting.DEFAULT_GUITAR_COUNT_LIMIT)
   @IsNumber()
   @IsOptional()
+  @Transform(({value}) => parseInt(value, 10))
   public count?: number = Setting.DEFAULT_GUITAR_COUNT_LIMIT;
 
   @IsIn(Object.values(SortDirection))
@@ -19,6 +20,7 @@ export class GuitarQuery {
 
   @Transform(({ value }) => parseInt(value, 10) || Setting.DEFAULT_PAGE_COUNT)
   @IsOptional()
+  @Transform(({value}) => parseInt(value, 10))
   public page?: number =  Setting.DEFAULT_PAGE_COUNT
 
   @IsArray()
@@ -26,7 +28,8 @@ export class GuitarQuery {
   @IsOptional()
   public type?: TypeOfGuitar[]
 
+  @IsArray()
   @IsNumber()
   @IsOptional()
-  public strings?: number
+  public strings?: string[]
 }

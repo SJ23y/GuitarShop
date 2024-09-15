@@ -1,5 +1,5 @@
 export type Guitars = {
-  enentities: Guitar[];
+  entities: Guitar[];
   totalPages: number;
   currentPage: number;
   totalItems: number;
@@ -8,7 +8,7 @@ export type Guitars = {
 
 
 export type Guitar = {
-    id?: string
+    id: string
     date: Date;
     title: string;
     price: number;

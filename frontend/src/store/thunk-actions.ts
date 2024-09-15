@@ -1,17 +1,45 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { Dispatch, State } from '../types/state';
-import { ApiRoute, AppRoute } from '../consts';
-import { DetailedOffer, Offer, Offers } from '../types/offers';
-import { redirectToRoute } from './actions';
+import { ApiRoute } from '../consts';
 import { dropToken, saveToken } from '../services/token';
 import { AuthData, UserData } from '../types/auth';
-import { Review, Reviews } from '../types/reviews';
-import { toast } from 'react-toastify';
+import { Guitar, Guitars } from '../types/guitars';
+import { GuitarQuery } from '../types/query';
+import { createQueryString } from '../utils';
 
-const uploadOffers = createAsyncThunk<Offers, undefined, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('uploadOffers', async (_arg, {extra: api}) => {
-  const { data } = await api.get<Offers>(ApiRoute.Offers);
+const uploadGuitars = createAsyncThunk<Guitars, GuitarQuery, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('uploadGuitars', async (query, {extra: api}) => {
+  console.log('url with query', `${ApiRoute.Guitars}?${createQueryString(query)}`)
+  const { data } = await api.get<Guitars>(`${ApiRoute.Guitars}?${createQueryString(query)}`);
   return data;
+});
+
+const saveNewGuitar = createAsyncThunk<
+  Guitar | undefined,
+  {formData: FormData, disableForm: (status?: boolean) => void},
+  {dispatch: Dispatch; state: State; extra: AxiosInstance}
+  >('saveNewGuitar', async ({formData, disableForm}, { extra: api}) => {
+  try {
+    const { data } = await api.post<Guitar>(ApiRoute.Guitars, formData);
+    disableForm(true);
+    return data;
+  } catch {
+    disableForm(false);
+  }
+});
+
+const updateGuitar = createAsyncThunk<
+  Guitar | undefined,
+  {formData: FormData, disableForm: (status?: boolean) => void, guitarId: string},
+  {dispatch: Dispatch; state: State; extra: AxiosInstance}
+  >('updateGuitar', async ({formData, disableForm, guitarId }, { extra: api}) => {
+  try {
+    const { data } = await api.patch<Guitar>(`${ApiRoute.Guitars}/${guitarId}`, formData);
+    disableForm(true);
+    return data;
+  } catch {
+    disableForm(false);
+  }
 });
 
 const checkAuthorization = createAsyncThunk<UserData, undefined, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('checkAuthorization', async (_arg, {extra: api}) => {
@@ -19,10 +47,9 @@ const checkAuthorization = createAsyncThunk<UserData, undefined, {dispatch: Disp
   return data;
 });
 
-const loginUser = createAsyncThunk<UserData, AuthData, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('loginUser', async ({ email, password }, {dispatch, extra: api}) => {
+const loginUser = createAsyncThunk<UserData, AuthData, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('loginUser', async ({ email, password }, { extra: api}) => {
   const { data } = await api.post<UserData>(ApiRoute.Login, {email, password});
   saveToken(data.token);
-  dispatch(redirectToRoute(AppRoute.Main));
   return data;
 });
 
@@ -32,58 +59,19 @@ const logoutUser = createAsyncThunk<void, undefined, {dispatch: Dispatch; state:
 });
 
 
-const uploadOfferById = createAsyncThunk<DetailedOffer | void, string, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('uploadOfferInfoById', async (offerId, { dispatch, extra: api}) => {
-  try {
-    const { data } = await api.get<DetailedOffer>(`${ApiRoute.Offers}/${offerId}`);
+const uploadGuitarById = createAsyncThunk<Guitar | void, string, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('uploadGuitarById', async (guitarId, { extra: api}) => {
+  const { data } = await api.get<Guitar>(`${ApiRoute.Guitars}/${guitarId}`);
     return data;
-  } catch {
-    dispatch(redirectToRoute(AppRoute.Page404));
-  }
-
-});
-
-const uploadNearbyOffers = createAsyncThunk<Offers, string, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('uploadOfferById', async (offerId, {extra: api}) => {
-  const { data } = await api.get<Offers>(`${ApiRoute.Offers}/${offerId}/nearby`);
-  return data;
-});
-
-const uploadReviews = createAsyncThunk<Reviews, string, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('uploadReviews', async (offerId, {extra: api}) => {
-  const { data } = await api.get<Reviews>(`${ApiRoute.Comments}/${offerId}`);
-  return data;
-});
-
-const uploadNewReview = createAsyncThunk<Review | undefined, {offerId: string; comment: string; rating: number; disableForm: (status: boolean) => void}, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('loginUser', async ({ offerId, comment, rating, disableForm }, {extra: api}) => {
-  try {
-    const { data } = await api.post<Review>(`${ApiRoute.Comments}/${offerId}`, {comment, rating});
-    disableForm(true);
-    return data;
-  } catch {
-    toast.warn('Возникла ошибка при отправке отзыва');
-    disableForm(false);
-  }
-});
-
-const uploadFavoriteOffers = createAsyncThunk<Offers, undefined, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('uploadFavoriteOffers', async (_arg, {extra: api}) => {
-  const { data } = await api.get<Offers>(ApiRoute.Favorites);
-  return data;
-});
-
-const toggleFavoriteStatus = createAsyncThunk<Offer, {offerId: string; status: number}, {dispatch: Dispatch; state: State; extra: AxiosInstance}>('toggleFavoriteStatus', async ({offerId, status}, {extra: api}) => {
-  const { data } = await api.post<Offer>(`${ApiRoute.Favorites}/${offerId}/${status}`);
-  return data;
-});
+  });
 
 export {
-  uploadOffers,
+  uploadGuitars,
   checkAuthorization,
   loginUser,
   logoutUser,
-  uploadOfferById,
-  uploadNearbyOffers,
-  uploadReviews,
-  uploadNewReview,
-  uploadFavoriteOffers,
-  toggleFavoriteStatus
+  uploadGuitarById,
+  saveNewGuitar,
+  updateGuitar
 };
 
 

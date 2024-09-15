@@ -6,12 +6,14 @@ export type UserData = {
   token: Token;
 };
 
+export type NewUser = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 export type AuthData = {
   email: string;
   password: string;
 };
 
-export type DetailMessageType = {
-  type: string;
-  message: string;
-};

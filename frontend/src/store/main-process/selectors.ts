@@ -1,40 +1,17 @@
 import { NameSpace } from '../../consts';
 import { State } from '../../types/state';
-import { sortAndFilterOffers } from '../../utils';
-import { createSelector } from '@reduxjs/toolkit';
 
-const getInitialOffers = (state: Pick<State, NameSpace.OFFERS>) =>
-  state[NameSpace.OFFERS].initialOffers;
-const getOffers = createSelector(
-  [
-    (state: Pick<State, NameSpace.OFFERS>) =>
-      state[NameSpace.OFFERS].initialOffers,
-    (state: Pick<State, NameSpace.OFFERS>) => state[NameSpace.OFFERS].city,
-    (state: Pick<State, NameSpace.OFFERS>) => state[NameSpace.OFFERS].sortBy,
-  ],
-  (initialOffers, city, sortBy) => {
-    if (initialOffers) {
-      return sortAndFilterOffers(city, sortBy, initialOffers);
-    }
-  },
-);
-const getLoadingStatus = (state: Pick<State, NameSpace.OFFERS>) =>
-  state[NameSpace.OFFERS].isLoading;
-const getSortBy = (state: Pick<State, NameSpace.OFFERS>) =>
-  state[NameSpace.OFFERS].sortBy;
-const getCurrentCity = (state: Pick<State, NameSpace.OFFERS>) =>
-  state[NameSpace.OFFERS].city;
-const getErrorStatus = (state: Pick<State, NameSpace.OFFERS>) =>
-  state[NameSpace.OFFERS].errorStatus;
-const getFavoriteOffers = (state: Pick<State, NameSpace.OFFERS>) =>
-  state[NameSpace.OFFERS].favoriteOffers;
+const getInitialGuitars = (state: Pick<State, NameSpace.GUITARS>) =>
+  state[NameSpace.GUITARS].initialGuitars;
+
+const getQuery = (state: Pick<State, NameSpace.GUITARS>) =>
+  state[NameSpace.GUITARS].query;
+
+const getErrorStatus = (state: Pick<State, NameSpace.GUITARS>) =>
+  state[NameSpace.GUITARS].errorStatus;
 
 export {
-  getInitialOffers,
-  getOffers,
-  getLoadingStatus,
-  getSortBy,
-  getCurrentCity,
+  getInitialGuitars,
+  getQuery,
   getErrorStatus,
-  getFavoriteOffers,
 };

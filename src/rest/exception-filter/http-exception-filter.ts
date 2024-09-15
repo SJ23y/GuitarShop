@@ -4,7 +4,6 @@ import { Component } from '../../shared/types/component.enum.js';
 import { Logger } from '../../shared/libs/index.js';
 import { Request, Response, NextFunction } from 'express';
 import { HttpError } from '../errors/http-error.js';
-import { StatusCodes } from 'http-status-codes';
 import { createErrorObject } from '../../shared/helpers/common.js';
 import { ApplicationError } from '../types/application-error.enum.js';
 
@@ -24,7 +23,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     this.logger.error(`[HttpException] ${req.path} ${error.message}`, error);
 
     res
-      .status(StatusCodes.BAD_REQUEST)
+      .status(error.httpStatusCode)
       .json(createErrorObject(ApplicationError.CommonError, error.message));
   }
 }

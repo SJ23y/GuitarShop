@@ -1,9 +1,7 @@
-import { StatusCodes } from 'http-status-codes';
-
 const AUTH_TOKEN_KEY_NAME = 'guitar-shop-token';
 
 enum DateFormat {
-  ReviewField = 'MMMM YYYY',
+  GuitarItem = 'DD.MM.YYYY',
   ReviewValue = 'YYYY-MM-DD',
 }
 
@@ -13,17 +11,6 @@ enum ApiRoute {
   Logout = '/logout',
   Register = '/register',
 }
-
-const StatusCodeMapping: Record<number, boolean> = {
-  [StatusCodes.BAD_REQUEST]: true,
-  [StatusCodes.UNAUTHORIZED]: true,
-  [StatusCodes.NOT_FOUND]: true,
-};
-
-const Setting = {
-  ApiTimeout: 5000,
-  BaseUrl: 'http://localhost:5000'
-} as const;
 
 enum SortBy {
   DATE = 'date',
@@ -39,10 +26,11 @@ enum AppRoute {
   Main = '/product-list',
   Login = '/',
   Register = '/register',
-  Product = '/guitar/:guitarId',
+  Product = '/guitar',
   Page404 = '/404',
   Add = '/add-guitar',
-  Edit = '/edit-guitar/:guitarId'
+  Edit = '/edit-guitar',
+  Logout = '/logout'
 }
 
 enum AuthorizationStatus {
@@ -57,6 +45,22 @@ enum NameSpace {
   USER = 'USER',
 }
 
+const GuitarType = {
+  ACUSTIC: {client: 'Акустическая', server: 'ACUSTIC', strings: [6, 7, 12]},
+  ELECTRIC: {client: 'Электрическая', server: 'ELECTRIC', strings: [4, 6, 7]},
+  UKULELE: {client: 'Укулеле', server: 'UKULELE', strings: [4]}
+} as const;
+
+const Setting = {
+  ApiTimeout: 5000,
+  BaseUrl: 'http://localhost:5000',
+  DefaultGuitarPerPage: 7,
+  DefaultStartPage: 1,
+  DefaultSortBy: SortBy.DATE,
+  DefaultSortDirection: SortDirection.UP,
+  PaginationPagesCount: 3
+} as const;
+
 export {
   Setting,
   AppRoute,
@@ -65,7 +69,7 @@ export {
   SortBy,
   AUTH_TOKEN_KEY_NAME,
   ApiRoute,
-  StatusCodeMapping,
   NameSpace,
-  SortDirection
+  SortDirection,
+  GuitarType
 };

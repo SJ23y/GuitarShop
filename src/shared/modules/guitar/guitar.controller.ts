@@ -35,7 +35,11 @@ export class GuitarController extends BaseController {
 
     this.logger.info('Register routes for guitar controller');
 
-    this.addRoute({path: '/guitars', method: HttpMethod.GET, handler: this.index});
+    this.addRoute({
+      path: '/guitars',
+      method: HttpMethod.GET,
+      handler: this.index
+    });
 
     this.addRoute({
       path: '/guitars',
@@ -44,7 +48,7 @@ export class GuitarController extends BaseController {
       middlewares: [
         new PrivateRouteMiddleware(),
         new PrivateRouteMiddleware(),
-        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'),'image'),
+        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'image'),
         new ValidateDtoMiddleware(AddGuitarDto)
       ],
     });

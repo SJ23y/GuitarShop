@@ -1,10 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { Dispatch, State } from '../../types/state';
-import { ApiRoute, AppRoute } from '../../consts';
-import { redirectToRoute } from '../actions';
+import { ApiRoute } from '../../consts';
 import { dropToken, saveToken } from '../../services/token';
-import { AuthData, UserData } from '../../types/auth';
+import { AuthData, NewUser, Token, UserData } from '../../types/auth';
 
 
 const checkAuthorization = createAsyncThunk<
@@ -16,17 +15,29 @@ const checkAuthorization = createAsyncThunk<
   return data;
 });
 
+const registerUser = createAsyncThunk<
+  Omit<UserData, Token>,
+  NewUser,
+  { dispatch: Dispatch; state: State; extra: AxiosInstance }
+>('loginUser', async (newUser, { extra: api }) => {
+  const { data } = await api.post<Omit<UserData, Token>>(ApiRoute.Register, {
+    ...newUser
+  });
+  console.log('data: ', data);
+  return data;
+});
+
+
 const loginUser = createAsyncThunk<
   UserData,
   AuthData,
   { dispatch: Dispatch; state: State; extra: AxiosInstance }
->('loginUser', async ({ email, password }, { dispatch, extra: api }) => {
+>('loginUser', async ({ email, password }, { extra: api }) => {
   const { data } = await api.post<UserData>(ApiRoute.Login, {
     email,
     password,
   });
   saveToken(data.token);
-  dispatch(redirectToRoute(AppRoute.Main));
   return data;
 });
 
@@ -42,5 +53,6 @@ const logoutUser = createAsyncThunk<
 export {
   checkAuthorization,
   loginUser,
-  logoutUser
+  logoutUser,
+  registerUser
 };

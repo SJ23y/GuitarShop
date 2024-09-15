@@ -5,12 +5,12 @@ import { createAPI } from '../services/api';
 import { Action } from 'redux';
 import { UserData } from './auth';
 import { Guitar, Guitars } from './guitars';
+import { GuitarQuery } from './query';
 
 export type MainProcess = {
   initialGuitars: null | Guitars;
-  sortBy: SortBy;
-  sortDirection: SortDirection;
   errorStatus: boolean;
+  query: GuitarQuery;
 };
 
 export type GuitarProcess = {

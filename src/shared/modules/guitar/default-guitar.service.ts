@@ -10,6 +10,7 @@ import { GuitarQuery } from './guitar.query.js';
 import { SortType } from '../../constants/sort.js';
 import { PaginationResult } from '../../types/pagination-result.interface.js';
 import { Setting } from '../../constants/const.js';
+import { plainToInstance } from 'class-transformer';
 
 @injectable()
 export class DefaultGuitarService implements GuitarService {
@@ -50,6 +51,7 @@ export class DefaultGuitarService implements GuitarService {
   }
 
   public async find(query?: GuitarQuery): Promise<PaginationResult<Guitar>> {
+    query = plainToInstance(GuitarQuery, query);
     const take = query?.count ?? Setting.DEFAULT_GUITAR_COUNT_LIMIT;
     const currentPage = query?.page ?? Setting.DEFAULT_PAGE_COUNT;
     const skip = (currentPage - 1) * take;
@@ -63,7 +65,9 @@ export class DefaultGuitarService implements GuitarService {
       }
 
     if (query?.strings) {
-      where.stringsNumber = query.strings
+      where.stringsNumber = {
+        in: query.strings.map(item => parseInt(item, 10))
+      }
     }
 
     if (query?.sortBy) {
